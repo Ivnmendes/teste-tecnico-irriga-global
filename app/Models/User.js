@@ -1,5 +1,7 @@
 'use strict'
 
+const { v4: uuidv4 } = require('uuid')
+
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
@@ -19,6 +21,10 @@ class User extends Model {
         userInstance.password = await Hash.make(userInstance.password)
       }
     })
+
+    this.addHook('beforeCreate', async (userInstance) => {
+      userInstance.uuid = uuidv4()
+    })
   }
 
   /**
@@ -33,6 +39,14 @@ class User extends Model {
    */
   tokens () {
     return this.hasMany('App/Models/Token')
+  }
+
+  static get primaryKey () {
+    return 'uuid'
+  }
+
+  static get incrementing() {
+    return false
   }
 }
 
