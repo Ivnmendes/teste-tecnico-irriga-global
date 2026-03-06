@@ -45,8 +45,12 @@ class User extends Model {
     return 'uuid'
   }
 
-  static get incrementing() {
+  static get incrementing () {
     return false
+  }
+
+  static get hidden () {
+    return ['password']
   }
 }
 
