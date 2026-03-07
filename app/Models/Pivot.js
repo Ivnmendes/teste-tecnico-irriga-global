@@ -10,12 +10,8 @@ class Pivot extends Model {
         super.boot()
 
         this.addHook('beforeCreate', async (pivotInstance) => {
-            pivotInstance.uuid = uuidv4()
+            pivotInstance.id = uuidv4()
         })
-    }
-
-    static get primaryKey () {
-        return 'uuid'
     }
 
     static get incrementing () {

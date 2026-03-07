@@ -6,7 +6,7 @@ class PivotController {
 
     async index ({auth, response}) {
         const pivots = await Pivot.query()
-            .where('userUuid', auth.user.uuid)
+            .where('userId', auth.user.uuid)
             .fetch()
 
         return response.json({
@@ -17,8 +17,8 @@ class PivotController {
 
     async show ({ params, auth, response }) {
         const pivot = await Pivot.query()
-            .where('uuid', params.id)
-            .where('userUuid', auth.user.uuid)
+            .where('id', params.id)
+            .where('userId', auth.user.uuid)
             .firstOrFail()
 
         return response.json({
@@ -36,7 +36,7 @@ class PivotController {
 
         const pivot = await Pivot.create({
             ...data,
-            userUuid: auth.user.uuid
+            userId: auth.user.uuid
         })
 
         return response.status(201).json({
@@ -47,8 +47,8 @@ class PivotController {
 
     async update ({ params, request, auth, response }) {
         const pivot = await Pivot.query()
-            .where('uuid', params.id)
-            .where('userUuid', auth.user.uuid)
+            .where('id', params.id)
+            .where('userId', auth.user.uuid)
             .firstOrFail()
 
         const data = request.only([
@@ -68,8 +68,8 @@ class PivotController {
 
     async destroy ({ params, auth, response }) {
         const pivot = await Pivot.query()
-            .where('uuid', params.id)
-            .where('userUuid', auth.user.uuid)
+            .where('id', params.id)
+            .where('userId', auth.user.uuid)
             .firstOrFail()
 
         await pivot.delete()
