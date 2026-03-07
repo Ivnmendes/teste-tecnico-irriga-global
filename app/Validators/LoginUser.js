@@ -1,6 +1,9 @@
 'use strict'
 
 class LoginUser {
+  get validateAll () {
+    return true
+  }
 
   get rules () {
     return {
