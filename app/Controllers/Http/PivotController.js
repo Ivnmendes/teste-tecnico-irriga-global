@@ -4,10 +4,33 @@ const Pivot = use('App/Models/Pivot')
 
 class PivotController {
 
-    async index ({auth, response}) {
-        const pivots = await Pivot.query()
-            .where('userId', auth.user.uuid)
-            .fetch()
+    async index ({ request, auth, response }) {
+        const { 
+            minAmountFlowRate, 
+            maxAmountFlowRate, 
+            minAmountMinApplicationDepth, 
+            maxAmountMinApplicationDepth 
+        } = request.get()
+
+        const page = request.input('page', 1)
+        const limit = request.input('limit', 10)
+
+        const query = Pivot.query().where('userId', auth.user.uuid)
+
+        if (minAmountFlowRate) {
+            query.where('flowRate', '>=', minAmountFlowRate)
+        }
+        if (maxAmountFlowRate) {
+            query.where('flowRate', '<=', maxAmountFlowRate)
+        }
+        if (minAmountMinApplicationDepth) {
+            query.where('minApplicationDepth', '>=', minAmountMinApplicationDepth)
+        }
+        if (maxAmountMinApplicationDepth) {
+            query.where('minApplicationDepth', '<=', maxAmountMinApplicationDepth)
+        }
+
+        const pivots = await query.paginate(page, limit)
 
         return response.json({
             message: 'Pivôs listados com sucesso.',
