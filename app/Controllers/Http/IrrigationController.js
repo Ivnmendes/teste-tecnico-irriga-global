@@ -5,10 +5,30 @@ const Pivot = use('App/Models/Pivot')
 
 class IrrigationController {
 
-    async index ({auth, response}) {
-        const irrigations = await Irrigation.query()
-            .where('userId', auth.user.uuid)
-            .fetch()
+    async index ({ request, auth, response }) {
+        const { 
+            pivotId,
+            minAmountApplicationAmount,
+            maxAmountApplicationAmount
+        } = request.get()
+        
+        const page = request.input('page', 1)
+        const limit = request.input('limit', 10)
+        
+        const query = Irrigation.query().where('userId', auth.user.uuid)
+
+        if (pivotId) {
+            query.where('pivotId', pivotId)
+        }
+
+        if (minAmountApplicationAmount) {
+            query.where('applicationAmount', '>=', minAmountApplicationAmount)
+        }
+        if (maxAmountApplicationAmount) {
+            query.where('applicationAmount', '<=', maxAmountApplicationAmount)
+        }
+
+        const irrigations = await query.paginate(page, limit)
 
         return response.json({
             message: 'Irrigações listadas com sucesso.',
