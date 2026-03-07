@@ -21,4 +21,11 @@ Route.get('/', () => {
 })
 
 Route.post('/auth/register', 'AuthController.register').validator('RegisterUser')
-Route.post('/auth/login', 'AuthController.login')
+Route.post('/auth/login', 'AuthController.login').validator('LoginUser')
+
+Route.resource('pivots', 'PivotController')
+  .apiOnly()
+  .middleware(['auth'])
+  .validator(new Map([
+    [['pivots.store', 'pivots.update'], ['Pivot']]
+  ]))
