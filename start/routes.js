@@ -29,3 +29,10 @@ Route.resource('pivots', 'PivotController')
   .validator(new Map([
     [['pivots.store', 'pivots.update'], ['Pivot']]
   ]))
+
+Route.resource('irrigation', 'IrrigationController')
+  .apiOnly()
+  .middleware(['auth'])
+  .validator(new Map([
+    [['irrigation.store', 'irrigation.update'], ['Irrigation']]
+  ]))
