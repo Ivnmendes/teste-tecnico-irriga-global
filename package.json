@@ -32,5 +32,8 @@
   },
   "autoload": {
     "App": "./app"
+  },
+  "devDependencies": {
+    "@adonisjs/cli": "^4.0.13"
   }
 }
